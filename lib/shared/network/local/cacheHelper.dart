@@ -21,10 +21,22 @@ class CacheHelper {
   static dynamic getData({
     required String key,
   }) {
+    if (sharedPreferences == null) {
+      print("error init ");
+      return null; // يمكنك التعامل بشكل مناسب مع الحالة التي لم يتم فيها تهيئة sharedPreferences
+    }
     var value = sharedPreferences!.get(key);
+    print("------>  init ");
     return value;
-    // return sharedPreferences!.get(key);
   }
+
+  // static dynamic getData({
+  //   required String key,
+  // }) {
+  //   var value = sharedPreferences!.get(key);
+  //   return value;
+  //   // return sharedPreferences!.get(key);
+  // }
 
   static Future<bool> removeData({required String key}) async {
     return await sharedPreferences!.remove(key);

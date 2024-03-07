@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
           //
           if (state is LoginSuccessState) {
             CacheHelper.saveDate(
-              key: 'uId',
+              key: "uId",
               value: state.uId,
             ).then(
               (value) {

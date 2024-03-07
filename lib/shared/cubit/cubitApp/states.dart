@@ -2,7 +2,7 @@
 
 abstract class ShopStatesApp {}
 
-class ShopInitialSttes extends ShopStatesApp {}
+class ShopInitialStates extends ShopStatesApp {}
 
 class ShopChangeBottomNavState extends ShopStatesApp {}
 

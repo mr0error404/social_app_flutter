@@ -15,6 +15,16 @@ import 'package:social_app/shared/style/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await CacheHelper.init();
+  // تأكد من استكمال تهيئة SharedPreferences قبل استخدامها
+  // bool isCacheHelperInitialized = await CacheHelper.init();
+  
+  // if (!isCacheHelperInitialized) {
+  //   print("حدث خطأ أثناء تهيئة CacheHelper");
+  //   return;
+  // }
+  await CacheHelper.init();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -22,10 +32,11 @@ void main() async {
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.debug,
   );
-  await CacheHelper.init();
+  
   Bloc.observer = MyBlocObserver();
+
   uId = CacheHelper.getData(key: 'uId') ?? "";
-  print("----- uId ------->" + uId + "0");
+  print("----- uId ------->" + uId + "|0");
   Widget widget;
   if (uId != null) {
     print("-------not null ------");
@@ -33,7 +44,7 @@ void main() async {
     // widget = RegisterScreen();
   } else {
     print("------- null ------");
-    widget = RegisterScreen();
+    widget = LoginScreen();
   }
 
   runApp(MyApp(
@@ -44,7 +55,6 @@ void main() async {
 // I/flutter (13296): ----- uId ------->0
 // I/flutter (13296): -------not null ------
 // I/flutter (13296): onCreate -- RgisterCubit
-
 
 class MyApp extends StatelessWidget {
   final Widget? startWidget;

@@ -77,7 +77,7 @@ class RgisterCubit extends Cubit<RegisterStates> {
             'email': email,
             'phone': phone,
             'uId': uId,
-        'isEmailVerified':isEmailVerified
+        'isEmailVerified':isEmailVerified  
 
           })
           .then((value) => emit(RegisterCreateUserSuccessState()))
