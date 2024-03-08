@@ -59,7 +59,7 @@ class RgisterCubit extends Cubit<RegisterStates> {
     suffix = isPasswordShow ? Icons.visibility : Icons.visibility_off;
     emit(ChangePasswordRegVisibilityState());
   }
-
+ 
   void userCreate({
     required String email,
     required String name,
