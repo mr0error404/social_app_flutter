@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,26 +19,28 @@ class RgisterCubit extends Cubit<RegisterStates> {
     required String name,
     required String phone,
   }) async {
-    print("------Start RegisterLoadingState --- register--1-");
-    emit(
-      RegisterLoadingState(),
-    );
+    // try {
+    emit(RegisterLoadingState());
+
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      print("------Start-   -- register--2-");
-      // emit(RegisterSuccessState());
-      userCreate(
-        email: email,
-        phone: phone,
+      createUser(
         name: name,
+        email: email,
+        password: password,
+        phone: phone,
         uId: credential.user!.uid,
-
       );
+      print(credential.user!.email);
+      print(credential.user!.emailVerified);
+      print(credential.user!.uid);
+      emit(RegisterSuccessState());
     } on FirebaseAuthException catch (e) {
+      emit(RegisterErrorState(e.toString()));
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
@@ -44,12 +48,48 @@ class RgisterCubit extends Cubit<RegisterStates> {
       }
     } catch (e) {
       emit(RegisterErrorState(e.toString()));
-      print(e.toString());
+      print(e);
     }
   }
 
-  /// In the provided Dart code snippet, there seems to be a typo in the function declaration. The
-  /// keyword `voi` is not a valid keyword in Dart. It should be `void` instead.
+  void createUser({
+    required String email,
+    required String password,
+    required String name,
+    required String phone,
+    required String uId,
+  }) {
+    emit(RegisterCreateUserLoadingState());
+    UserModel model = UserModel(
+      name: name,
+      phone: phone,
+      email: email,
+      uId: uId,
+      isEmailVerified : false,
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uId)
+        .set(model.toMap())
+        .then((value) {
+      emit(RegisterCreateUserSuccessState());
+    }).catchError((e) {
+      emit(RegisterCreateUserErrorState(e.toString()));
+      print(e.toString());
+    });
+
+    CollectionReference users = FirebaseFirestore.instance.collection('USERS');
+    users
+        // .add({
+        //   'name': name, // John Doe
+        //   'email': email, // Stokes and Sons
+        //   'phone': phone, // 42
+        //   'password': password,
+        // })
+        .add(model.toMap())
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
 
   IconData suffix = Icons.visibility;
   bool isPasswordShow = true;
@@ -58,33 +98,5 @@ class RgisterCubit extends Cubit<RegisterStates> {
     isPasswordShow = !isPasswordShow;
     suffix = isPasswordShow ? Icons.visibility : Icons.visibility_off;
     emit(ChangePasswordRegVisibilityState());
-  }
- 
-  void userCreate({
-    required String email,
-    required String name,
-    required String phone,
-    required String uId,
-    bool isEmailVerified= false ,
-  }) async {
-    print("-------------------------- Create User --------------------------");
-    try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uId)
-          .set({
-            'name': name,
-            'email': email,
-            'phone': phone,
-            'uId': uId,
-        'isEmailVerified':isEmailVerified  
-
-          })
-          .then((value) => emit(RegisterCreateUserSuccessState()))
-          .catchError(
-              (error) => emit(RegisterCreateUserErrorState(error.toString())));
-    } catch (e) {
-      emit(RegisterCreateUserErrorState(e.toString()));
-    }
   }
 }

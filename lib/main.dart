@@ -15,6 +15,7 @@ import 'package:social_app/shared/style/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   // await CacheHelper.init();
   // تأكد من استكمال تهيئة SharedPreferences قبل استخدامها
   // bool isCacheHelperInitialized = await CacheHelper.init();
@@ -34,19 +35,15 @@ void main() async {
   );
   
   Bloc.observer = MyBlocObserver();
-
+// Widget widget = LoginScreen();
   uId = CacheHelper.getData(key: 'uId') ?? "";
   print("----- uId ------->" + uId + "|0");
   Widget widget;
-  if (uId != null) {
-    print("-------not null ------");
-    widget = LayoutApp();
-    // widget = RegisterScreen();
-  } else {
-    print("------- null ------");
-    widget = LoginScreen();
-  }
-
+  if (uId != null && uId.isNotEmpty) {
+  widget = LayoutApp();
+} else {
+  widget = LoginScreen();
+}
   runApp(MyApp(
     startWidget: widget,
   ));

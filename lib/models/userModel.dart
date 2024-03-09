@@ -26,6 +26,7 @@ class UserModel {
       'name': name,
       'email': email,
       'phone': phone,
+      'uId':uId,
       'isEmailVerified': isEmailVerified,
     };
   }

@@ -29,12 +29,19 @@ class LoginScreen extends StatelessWidget {
             );
           //
           if (state is LoginSuccessState) {
+            // navigateAndFinish(
+            //   context,
+            //   LayoutApp(),
+            // );
+
+//
+//
             CacheHelper.saveDate(
               key: "uId",
               value: state.uId,
             ).then(
               (value) {
-                print("-----> "+state.uId);
+                print("-----> " + state.uId);
                 navigateAndFinish(
                   context,
                   LayoutApp(),

@@ -23,24 +23,24 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => RgisterCubit(),
       child: BlocConsumer<RgisterCubit, RegisterStates>(
           listener: (context, state) {
-        // if (state is RegisterCreateUserSuccessState) {
-        //   navigateAndFinish(
-        //     context,
-        //     LayoutApp(),
-        //   );
-        //   // if (state is RegisterCreateUserSuccessState) {
-        //   //   CacheHelper.saveDate(
-        //   //     key: 'uId',
-        //   //     value: state.,
-        //   //   ).then(
-        //   //         (value) {
-        //   //       navigateAndFinish(
-        //   //         context,
-        //   //         LayoutApp(),
-        //   //       );
-        //   //     },
-        //   //   );
-        //   // }
+        if (state is RegisterCreateUserSuccessState) {
+          navigateAndFinish(
+            context,
+            LayoutApp(),
+          );
+          // if (state is RegisterCreateUserSuccessState) {
+          //   CacheHelper.saveDate(
+          //     key: 'uId',
+          //     value:state.,
+          //   ).then(
+          //         (value) {
+          //       navigateAndFinish(
+          //         context,
+          //         LayoutApp(),
+          //       );
+          //     },
+          //   );
+          // }
         //   // if (state.loginModel?.status ?? false) {
         //   //   print(state.loginModel?.message);
         //   //   print(state.loginModel?.data?.token);
@@ -63,8 +63,8 @@ class RegisterScreen extends StatelessWidget {
         //   //     text: state.loginModel!.message ?? "",
         //   //     state: ToastStates.ERROR,
         //   //   );
-        //   // }
-        // }
+          // }
+        }
       }, builder: (context, state) {
         return Scaffold(
           body: Center(
@@ -142,18 +142,18 @@ class RegisterScreen extends StatelessWidget {
                         prefix: Icons.lock,
                         // sufixs: ShopCubit.get(context).suffix,
                         // isPassword: ShopCubit.get(context).isPasswordShow,
-                        sufixFunction: () {
-                          // ShopRgisterCubit.get(context)
-                          //     .changePasswordVisibility();
-                        },
-                        onSubmitted: (value) {
-                          // if (formKey.currentState!.validate()) {
-                          //   RgisterCubit.get(context).userLogin(
-                          //     email: emailController.text,
-                          //     password: passwordController.text,
-                          //   );
-                          // }
-                        },
+                        // sufixFunction: () {
+                        //   // ShopRgisterCubit.get(context)
+                        //   //     .changePasswordVisibility();
+                        // },
+                        // onSubmitted: (value) {
+                        //   // if (formKey.currentState!.validate()) {
+                        //   //   RgisterCubit.get(context).userLogin(
+                        //   //     email: emailController.text,
+                        //   //     password: passwordController.text,
+                        //   //   );
+                        //   // }
+                        // },
                         type: TextInputType.emailAddress,
                         validation: (String? value) {
                           if (value!.isEmpty) {

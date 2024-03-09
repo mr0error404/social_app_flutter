@@ -5,7 +5,7 @@ class CacheHelper {
   static init() async {
     sharedPreferences = await SharedPreferences.getInstance();
     // final Future<SharedPreferences> sharedPreferences =
-    SharedPreferences.getInstance();
+    // SharedPreferences.getInstance();
   }
 
   static Future<bool> saveDate({
@@ -21,10 +21,10 @@ class CacheHelper {
   static dynamic getData({
     required String key,
   }) {
-    if (sharedPreferences == null) {
-      print("error init ");
-      return null; // يمكنك التعامل بشكل مناسب مع الحالة التي لم يتم فيها تهيئة sharedPreferences
-    }
+    // if (sharedPreferences == null) {
+    //   print("error init ");
+    //   return null; // يمكنك التعامل بشكل مناسب مع الحالة التي لم يتم فيها تهيئة sharedPreferences
+    // }
     var value = sharedPreferences!.get(key);
     print("------>  init ");
     return value;
