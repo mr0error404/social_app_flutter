@@ -31,10 +31,12 @@ Widget defaultButton({
     );
 
 Widget defaultTextButton({
+  Color ?color,
   required Function() function,
   required String text,
 }) =>
     TextButton(
+      
       onPressed: function,
       child: Text(text),
     );

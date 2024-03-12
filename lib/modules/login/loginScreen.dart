@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
                 print("-----> " + state.uId);
                 navigateAndFinish(
                   context,
-                  LayoutApp(),
+                  const LayoutApp(), /// ---------------------------> const !!!!!!
                 );
               },
             );

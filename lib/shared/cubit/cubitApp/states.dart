@@ -1,51 +1,14 @@
+abstract class AppStates {}
 
+class InitialState extends AppStates {}
 
-abstract class ShopStatesApp {}
+class GetUserLoadingState extends AppStates {}
 
-class ShopInitialStates extends ShopStatesApp {}
+class GetUserSuccessState extends AppStates {}
 
-class ShopChangeBottomNavState extends ShopStatesApp {}
-
-class ShopLoadingHomeDataState extends ShopStatesApp {}
-
-class ShopSuccessHomeDataState extends ShopStatesApp {}
-
-class ShopErrorHomeDataState extends ShopStatesApp {}
-
-class ShopSuccessCategoriesDataState extends ShopStatesApp {}
-
-class ShopErrorCategoriesDataState extends ShopStatesApp {}
-
-class ShopChangeFavoritesState extends ShopStatesApp {}
-
-class ShopSuccessChangeFavoritesState extends ShopStatesApp {
-  // final ChangeFavoritesModel model ;
-  // ShopSuccessChangeFavoritesState(this.model);
+class GetUserErrorState extends AppStates {
+  final String error;
+  GetUserErrorState(this.error);
 }
 
-class ShopErrorChangeFavoritesState extends ShopStatesApp {}
-
-class ShopLoadingGetFavoritesState extends ShopStatesApp {}
-
-class ShopSuccessGetFavoritesState extends ShopStatesApp {}
-
-class ShopErrorGetFavoritesState extends ShopStatesApp {}
-
-class ShopLoadingUserDataState extends ShopStatesApp {}
-
-class ShopSuccessUserDataState extends ShopStatesApp {
-  // LoginModel  loginModel;
-  // ShopSuccessUserDataState(this.loginModel);
-}
-
-class ShopErrorUserDataState extends ShopStatesApp {}
-
-class ShopLoadingUpdateUserState extends ShopStatesApp {}
-
-class ShopSuccessUpdateUserState extends ShopStatesApp {
-  // LoginModel  loginModel;
-  // ShopSuccessUpdateUserState(this.loginModel);
-}
-
-class ShopErrorUpdateUserState extends ShopStatesApp {}
-
+class ChangeBottomNavState extends AppStates {}

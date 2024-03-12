@@ -8,6 +8,7 @@ import 'package:social_app/modules/login/loginScreen.dart';
 import 'package:social_app/modules/register/registerScreen.dart';
 import 'package:social_app/shared/components/constant.dart';
 import 'package:social_app/shared/cubit/MyBlocObserver.dart';
+import 'package:social_app/shared/cubit/cubitApp/cubit.dart';
 import 'package:social_app/shared/cubit/cubitRegister/cubit.dart';
 import 'package:social_app/shared/cubit/cubitRegister/states.dart';
 import 'package:social_app/shared/network/local/cacheHelper.dart';
@@ -15,11 +16,11 @@ import 'package:social_app/shared/style/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // await CacheHelper.init();
   // تأكد من استكمال تهيئة SharedPreferences قبل استخدامها
   // bool isCacheHelperInitialized = await CacheHelper.init();
-  
+
   // if (!isCacheHelperInitialized) {
   //   print("حدث خطأ أثناء تهيئة CacheHelper");
   //   return;
@@ -33,17 +34,17 @@ void main() async {
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.debug,
   );
-  
+
   Bloc.observer = MyBlocObserver();
 // Widget widget = LoginScreen();
   uId = CacheHelper.getData(key: 'uId') ?? "";
   print("----- uId ------->" + uId + "|0");
   Widget widget;
   if (uId != null && uId.isNotEmpty) {
-  widget = LayoutApp();
-} else {
-  widget = LoginScreen();
-}
+    widget = LayoutApp();
+  } else {
+    widget = LoginScreen();
+  }
   runApp(MyApp(
     startWidget: widget,
   ));
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (BuildContext context) => RgisterCubit(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => AppCubit()..getUserData(),
         ),
         // BlocProvider(
         //   create: (BuildContext context) => ShopCubit(),

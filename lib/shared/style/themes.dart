@@ -5,7 +5,8 @@ import 'package:hexcolor/hexcolor.dart';
 ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: const Color(0xFF505050),
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Color(0xFFBD00),
+    // seedColor: Color(0xFFBD00),
+    seedColor: Colors.white,
   ),
   primarySwatch: Colors.blue,
   // scaffoldBackgroundColor: Colors.white,
@@ -20,6 +21,7 @@ ThemeData darkTheme = ThemeData(
     ),
     backgroundColor: const Color(0xFF505050),
     titleTextStyle: TextStyle(
+      fontFamily: 'Jahnna',
       color: Colors.white,
       fontSize: 20.0,
       fontWeight: FontWeight.bold,
@@ -35,19 +37,20 @@ ThemeData darkTheme = ThemeData(
   ),
   fontFamily: "Shiny",
   textTheme: const TextTheme(
-    bodyText1: TextStyle(
-      color: Colors.grey,
-    ),
-  ),
+      bodyLarge: TextStyle(
+        color: Colors.grey,
+      ),
+      titleMedium: TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+        fontWeight: FontWeight.w600,
+      )),
 );
 
 ThemeData lightMode = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: Color(0xFFBD00),
   ),
-  // primaryColor: Colors.orange,
-  // primarySwatch: Colors.orange,
-  // primaryColorLight: Colors.orange,
 
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
@@ -58,6 +61,7 @@ ThemeData lightMode = ThemeData(
     ),
     backgroundColor: Colors.white,
     titleTextStyle: TextStyle(
+      fontFamily: 'Jahnna',
       color: Colors.black,
       fontSize: 20.0,
       fontWeight: FontWeight.bold,
@@ -76,11 +80,17 @@ ThemeData lightMode = ThemeData(
     backgroundColor: HexColor("#FFBF2F"),
   ),
   textTheme: const TextTheme(
-    bodyText1: const TextStyle(
-      color: Colors.black,
+    bodyLarge: const TextStyle(
+      color: Colors.white,
+    ),
+    titleMedium: TextStyle(
+      color: Colors.white,
+      fontSize: 16.0,
+      fontWeight: FontWeight.w600,
     ),
   ),
   // ),
+
   fontFamily: "Jannah",
   // fontFamily: "Shiny",
   iconTheme: const IconThemeData(

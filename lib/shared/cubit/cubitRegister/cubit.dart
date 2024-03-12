@@ -65,7 +65,7 @@ class RgisterCubit extends Cubit<RegisterStates> {
       phone: phone,
       email: email,
       uId: uId,
-      isEmailVerified : false,
+      isEmailVerified: false,
     );
     FirebaseFirestore.instance
         .collection('users')
@@ -78,17 +78,17 @@ class RgisterCubit extends Cubit<RegisterStates> {
       print(e.toString());
     });
 
-    CollectionReference users = FirebaseFirestore.instance.collection('USERS');
-    users
-        // .add({
-        //   'name': name, // John Doe
-        //   'email': email, // Stokes and Sons
-        //   'phone': phone, // 42
-        //   'password': password,
-        // })
-        .add(model.toMap())
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+    // CollectionReference users = FirebaseFirestore.instance.collection('USERS');
+    // users
+    //     // .add({
+    //     //   'name': name, // John Doe
+    //     //   'email': email, // Stokes and Sons
+    //     //   'phone': phone, // 42
+    //     //   'password': password,
+    //     // })
+    //     .add(model.toMap())
+    //     .then((value) => print("User Added"))
+    //     .catchError((error) => print("Failed to add user: $error"));
   }
 
   IconData suffix = Icons.visibility;
