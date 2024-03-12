@@ -44,7 +44,7 @@ class FeedsScreens extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Row(
+                Row( 
                   children: [
                     CircleAvatar(
                       radius: 25.0,
