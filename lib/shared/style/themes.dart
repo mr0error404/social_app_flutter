@@ -22,7 +22,7 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: const Color(0xFF505050),
     titleTextStyle: TextStyle(
       fontFamily: 'Jahnna',
-      color: Colors.white,
+      color: Colors.black,
       fontSize: 20.0,
       fontWeight: FontWeight.bold,
     ),
@@ -81,16 +81,15 @@ ThemeData lightMode = ThemeData(
   ),
   textTheme: const TextTheme(
     bodyLarge: const TextStyle(
-      color: Colors.white,
+      color: Colors.black,
     ),
     titleMedium: TextStyle(
-      color: Colors.white,
+      color: Colors.black,
       fontSize: 16.0,
       fontWeight: FontWeight.w600,
     ),
   ),
   // ),
-
   fontFamily: "Jannah",
   // fontFamily: "Shiny",
   iconTheme: const IconThemeData(
