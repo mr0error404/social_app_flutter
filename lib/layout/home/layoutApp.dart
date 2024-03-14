@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/modules/newPost/newPostScreen.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/cubit/cubitApp/cubit.dart';
 import 'package:social_app/shared/cubit/cubitApp/states.dart';
@@ -17,7 +18,11 @@ class LayoutApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is NewPostState ){
+          navigateTo(context, NewPostSceeen());
+        }
+      },
       builder: (context, state) {
         var cubit = AppCubit.get(context);
         return Scaffold(
@@ -57,6 +62,12 @@ class LayoutApp extends StatelessWidget {
                 label: "Chat",
                 icon: Icon(
                   IconBroken.Chat,
+                ),
+              ),
+              BottomNavigationBarItem(
+                label: "Post",
+                icon: Icon(
+                  IconBroken.Paper_Upload,
                 ),
               ),
               BottomNavigationBarItem(

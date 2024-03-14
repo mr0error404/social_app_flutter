@@ -1,5 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app/shared/style/icon_broken.dart';
+
+Widget defaultAppBar(
+  BuildContext context, {
+  String? title,
+  List<Widget>? actions,
+}) =>
+    AppBar(
+      
+      title: Text(
+        "$title",
+      ),
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: const Icon(
+          IconBroken.Arrow___Left_2,
+        ),
+      ),
+      actions: actions,
+    );
 
 Widget defaultButton({
   double rid = 20.0,
@@ -20,6 +42,7 @@ Widget defaultButton({
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: MaterialButton(
         onPressed: function,
+        // ignore: sort_child_properties_last
         child: Text(
           uperCase ? text.toUpperCase() : text,
           style: TextStyle(
@@ -31,12 +54,11 @@ Widget defaultButton({
     );
 
 Widget defaultTextButton({
-  Color ?color,
+  Color? color,
   required Function() function,
   required String text,
 }) =>
     TextButton(
-      
       onPressed: function,
       child: Text(text),
     );

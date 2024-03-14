@@ -65,6 +65,11 @@ class RgisterCubit extends Cubit<RegisterStates> {
       phone: phone,
       email: email,
       uId: uId,
+      bio: "Write your bio ...",
+      image:
+          "https://media.istockphoto.com/id/1484481140/photo/happy-smiling-young-woman-using-mobile-phone-with-credit-card-for-shopping-and-payment-online.jpg?s=2048x2048&w=is&k=20&c=3CoRtkl73z9UDV6rKoVArCGQsSmyizYXrWz2d_53MfI=",
+      cover:
+          "https://media.istockphoto.com/id/1484481140/photo/happy-smiling-young-woman-using-mobile-phone-with-credit-card-for-shopping-and-payment-online.jpg?s=2048x2048&w=is&k=20&c=3CoRtkl73z9UDV6rKoVArCGQsSmyizYXrWz2d_53MfI=",
       isEmailVerified: false,
     );
     FirebaseFirestore.instance

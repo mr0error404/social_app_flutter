@@ -46,12 +46,12 @@ ThemeData darkTheme = ThemeData(
         fontWeight: FontWeight.w600,
       )),
 );
-
+//////////////////////////////////////////////////////////////////// light mode
 ThemeData lightMode = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: Color(0xFFBD00),
+    // seedColor: Colors.blue,
   ),
-
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
     titleSpacing: 20.0,
