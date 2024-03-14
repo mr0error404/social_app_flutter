@@ -22,3 +22,15 @@ class ProfileImagePickedErrorState extends AppStates {}
 class CoverImagePickedSuccessState extends AppStates {}
 
 class CoverImagePickedErrorState extends AppStates {}
+
+class ProfileUploadImageSuccessState extends AppStates {}
+
+class ProfileUploadImageErrorState extends AppStates {}
+
+class CoverUploadImageSuccessState extends AppStates {}
+
+class CoverUploadImageErrorState extends AppStates {}
+
+class UserUpdateLoadingState extends AppStates {}
+
+class UserUpdateErrorState extends AppStates {}

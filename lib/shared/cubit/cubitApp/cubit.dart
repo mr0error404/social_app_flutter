@@ -14,6 +14,7 @@ import 'package:social_app/modules/settings/settingScreen.dart';
 import 'package:social_app/modules/users/usersScreen.dart';
 import 'package:social_app/shared/components/constant.dart';
 import 'package:social_app/shared/cubit/cubitApp/states.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(InitialState());
@@ -83,11 +84,140 @@ class AppCubit extends Cubit<AppStates> {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
+      coverImage = File(pickedFile.path);
       emit(CoverImagePickedSuccessState());
     } else {
       emit(CoverImagePickedErrorState());
       print("No image Selected");
     }
+  }
+
+  String profileImageUrl = "";
+  void updateProfileImage({
+    required String name,
+    required String phone,
+    required String bio,
+  }) {
+    emit(UserUpdateLoadingState());
+    FirebaseStorage.instance
+        .ref() // enter
+        .child(
+          // create and check file
+          "users/${Uri.file(profileImage!.path).pathSegments.last}",
+        )
+        .putFile(profileImage!) // update File
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        profileImageUrl = value;
+        updateUser(
+          name: name,
+          phone: phone,
+          bio: bio,
+          cover: value,
+        );
+        // emit(ProfileUploadImageSuccessState());
+      }).catchError((error) {
+        emit(ProfileUploadImageErrorState());
+      });
+    }).catchError((error) {
+      emit(ProfileUploadImageErrorState());
+    });
+  }
+
+  String coverImageUrl = "";
+  void updateCoverImage({
+    required String name,
+    required String phone,
+    required String bio,
+  }) {
+    emit(UserUpdateLoadingState());
+    FirebaseStorage.instance
+        .ref() // enter
+        .child(
+          // create and check file
+          "users/${Uri.file(coverImage!.path).pathSegments.last}",
+        )
+        .putFile(coverImage!) // update File
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        coverImageUrl = value;
+        updateUser(
+          name: name,
+          phone: phone,
+          bio: bio,
+          image: value,
+        );
+        // emit(CoverUploadImageSuccessState());
+      }).catchError((error) {
+        emit(CoverUploadImageErrorState());
+      });
+    }).catchError((error) {
+      emit(CoverUploadImageErrorState());
+    });
+  }
+
+  // void updateUserImage({
+  //   required String name,
+  //   required String phone,
+  //   required String bio,
+  // }) {
+  //   emit(UserUpdateLoadingState());
+
+  //   if (coverImage != null) {
+  //     updateCoverImage();
+  //   } else if (profileImage != null) {
+  //     updateProfileImage();
+  //   } else if (coverImage != null && profileImage != null) {
+  //   } else {
+  //     updateUser(
+  //       name: name,
+  //       bio: bio,
+  //       phone: phone,
+  //     );
+  //   }
+  //   // FirebaseFirestore.instance
+  //   //     .collection("users")
+  //   //     .doc(userModel!.uId)
+  //   //     .update(
+  //   //       model.toMap(),
+  //   //     )
+  //   //     .then((value) {
+  //   //   getUserData();
+  //   // }).catchError((error) {
+  //   //   emit(UserUpdateErrorState());
+  //   // });
+  // }
+
+  void updateUser({
+    required String name,
+    required String phone,
+    required String bio,
+    String? cover,
+    String? image,
+  }) {
+    UserModel model = UserModel(
+      name: name,
+      phone: phone,
+      bio: bio,
+      email: userModel!.email,
+      image: image ?? userModel!.image,
+      uId: userModel!.uId,
+      cover: cover ?? userModel!.cover,
+      isEmailVerified: false,
+      //https://images.pexels.com/photos/7230831/pexels-photo-7230831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2
+    );
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userModel!.uId)
+        .update(
+          model.toMap(),
+        )
+        .then((value) {
+      getUserData();
+    }).catchError((error) {
+      emit(UserUpdateErrorState());
+    });
   }
 }
