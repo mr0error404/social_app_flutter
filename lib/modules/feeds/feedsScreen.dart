@@ -232,7 +232,7 @@ class FeedsScreens extends StatelessWidget {
                 //   ),
                 // ),
                 ListView.separated(
-                  shrinkWrap: true,
+                  shrinkWrap: true, 
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => buildPostItem(
                       AppCubit.get(context).posts[index], context),
