@@ -1,3 +1,52 @@
+
+// void updateUserImage({
+//   required String name,
+//   required String phone,
+//   required String bio,
+// }) {
+//   emit(UserUpdateLoadingState());
+
+//   if (coverImage != null) {
+//     updateCoverImage();
+//   } else if (profileImage != null) {
+//     updateProfileImage();
+//   } else if (coverImage != null && profileImage != null) {
+//   } else {
+//     updateUser(
+//       name: name,
+//       bio: bio,
+//       phone: phone,
+//     );
+//   }
+//   // FirebaseFirestore.instance
+//   //     .collection("users")
+//   //     .doc(userModel!.uId)
+//   //     .update(
+//   //       model.toMap(),
+//   //     )
+//   //     .then((value) {
+//   //   getUserData();
+//   // }).catchError((error) {
+//   //   emit(UserUpdateErrorState());
+//   // });
+// }
+
+
+
+
+//////////////////////////////////////////////
+////
+///
+///
+///
+///
+///
+///
+///
+///
+///
+///
+
 // // ignore_for_file: unnecessary_const, deprecated_member_use, unused_local_variable
 
 // import 'package:bloc/bloc.dart';

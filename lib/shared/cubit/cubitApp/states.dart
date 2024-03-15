@@ -11,6 +11,15 @@ class GetUserErrorState extends AppStates {
   GetUserErrorState(this.error);
 }
 
+class GetPostsLoadingState extends AppStates {}
+
+class GetPostsSuccessState extends AppStates {}
+
+class GetPostsErrorState extends AppStates {
+  final String error;
+  GetPostsErrorState(this.error);
+}
+
 class ChangeBottomNavState extends AppStates {}
 
 class NewPostState extends AppStates {}
@@ -34,3 +43,16 @@ class CoverUploadImageErrorState extends AppStates {}
 class UserUpdateLoadingState extends AppStates {}
 
 class UserUpdateErrorState extends AppStates {}
+
+// create post
+class CreatePostLoadingState extends AppStates {}
+
+class CreatePostSuccessState extends AppStates {}
+
+class CreatePostErrorState extends AppStates {}
+
+class PostImagePickedSuccessState extends AppStates {}
+
+class PostImagePickedErrorState extends AppStates {}
+
+class RemovePostImageState extends AppStates {}

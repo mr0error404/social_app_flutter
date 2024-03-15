@@ -67,7 +67,9 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => RgisterCubit(),
         ),
         BlocProvider(
-          create: (BuildContext context) => AppCubit()..getUserData(),
+          create: (BuildContext context) => AppCubit()
+            ..getUserData()
+            ..getPosts(),
         ),
         // BlocProvider(
         //   create: (BuildContext context) => ShopCubit(),

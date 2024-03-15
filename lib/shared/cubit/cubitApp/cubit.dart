@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_app/models/postModel.dart';
 import 'package:social_app/models/userModel.dart';
 import 'package:social_app/modules/chats/chatsScreens.dart';
 import 'package:social_app/modules/feeds/feedsScreen.dart';
@@ -93,6 +94,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   String profileImageUrl = "";
+
   void updateProfileImage({
     required String name,
     required String phone,
@@ -114,7 +116,7 @@ class AppCubit extends Cubit<AppStates> {
           name: name,
           phone: phone,
           bio: bio,
-          cover: value,
+          image: value,
         );
         // emit(ProfileUploadImageSuccessState());
       }).catchError((error) {
@@ -126,6 +128,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   String coverImageUrl = "";
+
   void updateCoverImage({
     required String name,
     required String phone,
@@ -147,7 +150,7 @@ class AppCubit extends Cubit<AppStates> {
           name: name,
           phone: phone,
           bio: bio,
-          image: value,
+          cover: value,
         );
         // emit(CoverUploadImageSuccessState());
       }).catchError((error) {
@@ -157,38 +160,6 @@ class AppCubit extends Cubit<AppStates> {
       emit(CoverUploadImageErrorState());
     });
   }
-
-  // void updateUserImage({
-  //   required String name,
-  //   required String phone,
-  //   required String bio,
-  // }) {
-  //   emit(UserUpdateLoadingState());
-
-  //   if (coverImage != null) {
-  //     updateCoverImage();
-  //   } else if (profileImage != null) {
-  //     updateProfileImage();
-  //   } else if (coverImage != null && profileImage != null) {
-  //   } else {
-  //     updateUser(
-  //       name: name,
-  //       bio: bio,
-  //       phone: phone,
-  //     );
-  //   }
-  //   // FirebaseFirestore.instance
-  //   //     .collection("users")
-  //   //     .doc(userModel!.uId)
-  //   //     .update(
-  //   //       model.toMap(),
-  //   //     )
-  //   //     .then((value) {
-  //   //   getUserData();
-  //   // }).catchError((error) {
-  //   //   emit(UserUpdateErrorState());
-  //   // });
-  // }
 
   void updateUser({
     required String name,
@@ -218,6 +189,121 @@ class AppCubit extends Cubit<AppStates> {
       getUserData();
     }).catchError((error) {
       emit(UserUpdateErrorState());
+    });
+  }
+
+  File? postImage;
+  Future<void> getPostImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      postImage = File(pickedFile.path);
+      emit(PostImagePickedSuccessState());
+    } else {
+      emit(PostImagePickedErrorState());
+      print("No image Selected");
+    }
+  }
+
+  void removePodtImage() {
+    postImage = null;
+    emit(RemovePostImageState());
+  }
+
+  String postImageUrl = "";
+  void uploadPostImage({
+    // required String name,
+    // required String uid,
+    // required String image,
+    required String dateTime,
+    required String text,
+  }) {
+    emit(CreatePostLoadingState());
+    FirebaseStorage.instance
+        .ref()
+        .child(
+          "posts/${Uri.file(postImage!.path).pathSegments.last}",
+        )
+        .putFile(postImage!) // update File
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        postImageUrl = value;
+        createPost(
+          dateTime: dateTime,
+          text: text,
+          postImage: value,
+        );
+        // updateUser(
+        //   name: name,
+        //   cover: value,
+        // );
+        // emit(CoverUploadImageSuccessState());
+      }).catchError((error) {
+        print("==================== error");
+        print(error.toString());
+        emit(CreatePostErrorState());
+        print(error.toString());
+      });
+    }).catchError((error) {
+      print("==================== error");
+      print(error.toString());
+      emit(CreatePostErrorState());
+      print(error.toString());
+    });
+  }
+
+  void createPost({
+    required String dateTime,
+    required String text,
+    String? postImage,
+  }) {
+    emit(CreatePostLoadingState());
+    PostModel model = PostModel(
+      name: userModel!.name,
+      image: userModel!.image,
+      uId: userModel!.uId,
+      dateTime: dateTime,
+      text: text,
+      postImage: postImage ?? "",
+      // cover: cover ?? userModel!.cover,
+      // isEmailVerified: false,
+      // //https://images.pexels.com/photos/7230831/pexels-photo-7230831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2
+    );
+    FirebaseFirestore.instance
+        .collection("posts")
+        .add(
+          model.toMap(),
+        )
+        .then((value) {
+      emit(CreatePostSuccessState());
+      // getUserData();
+    }).catchError((error) {
+      print("--------------> Error error");
+      print(error.toString());
+      emit(CreatePostErrorState());
+    });
+  }
+
+  //// posts
+  List<PostModel> postos = [];
+  void getPosts() {
+    emit(GetPostsLoadingState());
+    FirebaseFirestore.instance.collection("posts").get().then((value) {
+      value.docs.forEach((element) {
+        postos.add(
+          PostModel.formJson(
+            element.data(),
+          ),
+        );
+      });
+      emit(GetPostsSuccessState());
+    }).catchError((error) {
+      emit(
+        GetPostsErrorState(
+          error.toString(),
+        ),
+      );
     });
   }
 }

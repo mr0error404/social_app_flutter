@@ -59,20 +59,6 @@ class EditProfileScreen extends StatelessWidget {
               ),
             ],
           ),
-          // appBar: defaultAppBar(
-          //   context ,
-          //   title: "Edit Profile",
-          //   actions: [
-          //     defaultTextButton(
-          //       function: () {
-          //       },
-          //       text: "UpDate",
-          //     ),
-          //      SizedBox(
-          //       width: 15.0,
-          //     ),
-          //   ],
-          // ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -142,7 +128,9 @@ class EditProfileScreen extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 60.0,
                                 backgroundImage: profileImage == null
-                                    ? NetworkImage("${userModel.image}")
+                                    ? NetworkImage(
+                                        "${userModel.image}",
+                                      )
                                     : FileImage(profileImage)
                                         as ImageProvider<Object>,
                               ),
