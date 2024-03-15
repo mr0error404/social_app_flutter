@@ -18,7 +18,7 @@ class FeedsScreens extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          // condition: AppCubit.get(context).postos.length > 0,
+          // condition: AppCubit.get(context).posts.length > 0,
           condition: true,
           builder: (context) => SingleChildScrollView(
             physics: BouncingScrollPhysics(),
@@ -188,7 +188,7 @@ class FeedsScreens extends StatelessWidget {
                 //           ),
                 //         ),
                 //         Container(
-                //           height: 200.0,    
+                //           height: 200.0,
                 //           width: double.infinity,
                 //           decoration: BoxDecoration(
                 //             borderRadius: BorderRadius.circular(
