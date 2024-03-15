@@ -235,7 +235,7 @@ class FeedsScreens extends StatelessWidget {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => buildPostItem(
-                      AppCubit.get(context).postos[index], context),
+                      AppCubit.get(context).posts[index], context),
                   separatorBuilder: (context, index) => SizedBox(
                     height: 8.0,
                   ),
@@ -396,9 +396,10 @@ class FeedsScreens extends StatelessWidget {
                   borderRadius: BorderRadius.circular(
                     5.0,
                   ),
-                  image: const DecorationImage(
+                  image: DecorationImage(
                     image: NetworkImage(
-                      "https://img.freepik.com/free-photo/portrait-pretty-redhead-girl-smiling_176420-9245.jpg?w=2000",
+                      "${model.postImage}",
+                      // "https://img.freepik.com/free-photo/portrait-pretty-redhead-girl-smiling_176420-9245.jpg?w=2000",
                       // "https://img.freepik.com/free-photo/adorable-cheerful-woman-has-gentle-smile-recalls-heartwarming-situation-life-keeps-hands-chin-has-interesting-intrigued-gaze-aside_273609-39273.jpg?t=st=1710262587~exp=1710266187~hmac=7d53913fb064127de7a129e3580f134a83c6317fed70cbd1656672261dd09d88&w=2000",
                     ),
                     fit: BoxFit.cover,
@@ -429,7 +430,7 @@ class FeedsScreens extends StatelessWidget {
                               width: 5.0,
                             ),
                             Text(
-                              "120",
+                              "0",
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
@@ -456,7 +457,7 @@ class FeedsScreens extends StatelessWidget {
                               width: 5.0,
                             ),
                             Text(
-                              "120 comment",
+                              "0 comment",
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
@@ -483,12 +484,13 @@ class FeedsScreens extends StatelessWidget {
                   child: InkWell(
                     child: Row(
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 18.0,
                           backgroundImage: NetworkImage(
-                            "https://cdn.pixabay.com/photo/2017/06/24/02/56/art-2436545_1280.jpg",
-                            // "https://media.istockphoto.com/id/1484481140/photo/happy-smiling-young-woman-using-mobile-phone-with-credit-card-for-shopping-and-payment-online.jpg?s=2048x2048&w=is&k=20&c=3CoRtkl73z9UDV6rKoVArCGQsSmyizYXrWz2d_53MfI=",
-                          ),
+                              "${AppCubit.get(context).userModel!.image}"
+                              // "https://cdn.pixabay.com/photo/2017/06/24/02/56/art-2436545_1280.jpg",
+                              // "https://media.istockphoto.com/id/1484481140/photo/happy-smiling-young-woman-using-mobile-phone-with-credit-card-for-shopping-and-payment-online.jpg?s=2048x2048&w=is&k=20&c=3CoRtkl73z9UDV6rKoVArCGQsSmyizYXrWz2d_53MfI=",
+                              ),
                         ),
                         const SizedBox(
                           width: 15.0,
