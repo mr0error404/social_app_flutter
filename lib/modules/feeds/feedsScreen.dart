@@ -434,6 +434,7 @@ class FeedsScreens extends StatelessWidget {
                               width: 5.0,
                             ),
                             Text(
+                              // "${AppCubit.get(context).likes[index] ?? 0}",
                               "0",
                               style: Theme.of(context).textTheme.bodySmall,
                             ),

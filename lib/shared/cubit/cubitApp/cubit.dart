@@ -288,17 +288,26 @@ class AppCubit extends Cubit<AppStates> {
   //// posts
   List<PostModel> posts = [];
   List<String> postsId = [];
+  List<int> likes = [];
   void getPosts() {
     emit(GetPostsLoadingState());
     FirebaseFirestore.instance.collection("posts").get().then((value) {
       value.docs.forEach((element) {
-        print("POSTS------------>    POSTS    ");
-        postsId.add(element.id);
-        posts.add(
-          PostModel.fromJson(
-            element.data(),
-          ),
-        );
+        element.reference.collection("likes").get().then((value) {
+          likes.add(value.docs.length);
+          postsId.add(element.id);
+          posts.add(
+            PostModel.fromJson(
+              element.data(),
+            ),
+          );
+          postsId.add(element.id);
+          posts.add(
+            PostModel.fromJson(
+              element.data(),
+            ),
+          );
+        }).catchError((error) {});
       });
 
       emit(GetPostsSuccessState());
