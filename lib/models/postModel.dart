@@ -15,7 +15,7 @@ class PostModel {
     this.postImage,
   });
 
-  PostModel.formJson(Map<String, dynamic> json) {
+  PostModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     uId = json['uId'];
     image = json['image'];

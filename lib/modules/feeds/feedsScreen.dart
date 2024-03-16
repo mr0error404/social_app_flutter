@@ -18,8 +18,9 @@ class FeedsScreens extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          // condition: AppCubit.get(context).posts.length > 0,
-          condition: true,
+          condition: AppCubit.get(context).posts.length > 0 &&
+              AppCubit.get(context).userModel != null,
+          // condition: true,
           builder: (context) => SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -232,14 +233,15 @@ class FeedsScreens extends StatelessWidget {
                 //   ),
                 // ),
                 ListView.separated(
-                  shrinkWrap: true, 
+                  shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) => buildPostItem(
-                      AppCubit.get(context).posts[index], context),
+                      AppCubit.get(context).posts[index], context, index),
                   separatorBuilder: (context, index) => SizedBox(
                     height: 8.0,
                   ),
-                  itemCount: 10,
+                  // itemCount: 10,
+                  itemCount: AppCubit.get(context).posts.length,
                 ),
                 SizedBox(
                   height: 8.0,
@@ -253,7 +255,7 @@ class FeedsScreens extends StatelessWidget {
     );
   }
 
-  Widget buildPostItem(PostModel model, context) {
+  Widget buildPostItem(PostModel model, context, index) {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 10.0,
@@ -263,6 +265,8 @@ class FeedsScreens extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Column(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           // shrinkWrap: true,
           children: [
             Row(
@@ -508,7 +512,10 @@ class FeedsScreens extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    AppCubit.get(context)
+                        .likePost(AppCubit.get(context).postsId[index]);
+                  },
                   child: Row(
                     children: [
                       Icon(

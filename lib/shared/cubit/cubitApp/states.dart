@@ -20,6 +20,13 @@ class GetPostsErrorState extends AppStates {
   GetPostsErrorState(this.error);
 }
 
+class LikePostSuccessState extends AppStates {}
+
+class LikePostErrorState extends AppStates {
+  final String error;
+  LikePostErrorState(this.error);
+}
+
 class ChangeBottomNavState extends AppStates {}
 
 class NewPostState extends AppStates {}
