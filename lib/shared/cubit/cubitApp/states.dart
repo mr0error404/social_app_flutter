@@ -11,6 +11,15 @@ class GetUserErrorState extends AppStates {
   GetUserErrorState(this.error);
 }
 
+class GetAllUserLoadingState extends AppStates {}
+
+class GetAllUserSuccessState extends AppStates {}
+
+class GetAllUserErrorState extends AppStates {
+  final String error;
+  GetAllUserErrorState(this.error);
+}
+
 class GetPostsLoadingState extends AppStates {}
 
 class GetPostsSuccessState extends AppStates {}
