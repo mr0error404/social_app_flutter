@@ -19,7 +19,7 @@ class UserModel {
     this.isEmailVerified,
   });
 
-  UserModel.formJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     name = json['name'];
     phone = json['phone'];

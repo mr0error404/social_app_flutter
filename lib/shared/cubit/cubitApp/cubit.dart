@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_app/models/messageModel.dart';
 import 'package:social_app/models/postModel.dart';
 import 'package:social_app/models/userModel.dart';
 import 'package:social_app/modules/chats/chatsScreens.dart';
@@ -28,7 +29,7 @@ class AppCubit extends Cubit<AppStates> {
 
     FirebaseFirestore.instance.collection("users").doc(uId).get().then((value) {
       print(value.data());
-      userModel = UserModel.formJson(value.data()!);
+      userModel = UserModel.fromJson(value.data()!);
       emit(GetUserSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -55,6 +56,7 @@ class AppCubit extends Cubit<AppStates> {
   ];
 
   void changeBottomNav(int index) {
+    if (index == 1) getUsers();
     if (index == 2)
       emit(
         NewPostState(),
@@ -290,7 +292,6 @@ class AppCubit extends Cubit<AppStates> {
   List<String> postsId = [];
   List<int> likes = [];
   void getPosts() {
-    emit(GetPostsLoadingState());
     FirebaseFirestore.instance.collection("posts").get().then((value) {
       value.docs.forEach((element) {
         element.reference.collection("likes").get().then((value) {
@@ -337,6 +338,70 @@ class AppCubit extends Cubit<AppStates> {
         LikePostErrorState(
           error.toString(),
         ),
+      );
+    });
+  }
+
+  List<UserModel> users = [];
+  void getUsers() {
+    users = [];
+    FirebaseFirestore.instance.collection("users").get().then((value) {
+      value.docs.forEach((element) {
+        if (element.data()['uId'] != userModel!.uId)
+          users.add(UserModel.fromJson(element.data()));
+      });
+
+      emit(GetAllUserSuccessState());
+    }).catchError((error) {
+      emit(
+        GetAllUserErrorState(
+          error.toString(),
+        ),
+      );
+    });
+  }
+
+  void sendMessage({
+    required String receiveId,
+    required String dateTime,
+    required String text,
+  }) {
+    /// The line `MessegeModel messegeModel = MessegeModel(receiveId: ,)` seems to be incomplete as the
+    /// `receiveId` parameter is missing a value.
+    MessageModel messageModel = MessageModel(
+      receiveId: receiveId,
+      senderId: userModel!.uId,
+      dateTime: dateTime,
+      text: text,
+    );
+
+    FirebaseFirestore.instance //user 1
+        .collection("users")
+        .doc(userModel!.uId)
+        .collection("chats")
+        .doc(receiveId)
+        .collection("messages")
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(GetMessageSuccessState());
+    }).catchError((error) {
+      emit(
+        GetMessageErrorState(error.toString()),
+      );
+    });
+
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(receiveId)
+        .collection("chats")
+        .doc(userModel!.uId)
+        .collection("messages")
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(GetMessageSuccessState());
+    }).catchError((error) {
+      emit(
+        GetMessageErrorState(error.toString()),
       );
     });
   }
