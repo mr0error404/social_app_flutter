@@ -386,7 +386,7 @@ class AppCubit extends Cubit<AppStates> {
       emit(GetMessageSuccessState());
     }).catchError((error) {
       emit(
-        GetMessageErrorState(error.toString()),
+        SendMessageErrorState(error.toString()),
       );
     });
 
@@ -398,11 +398,33 @@ class AppCubit extends Cubit<AppStates> {
         .collection("messages")
         .add(messageModel.toMap())
         .then((value) {
-      emit(GetMessageSuccessState());
+      emit(SendMessageSuccessState());
     }).catchError((error) {
       emit(
-        GetMessageErrorState(error.toString()),
+        SendMessageErrorState(error.toString()),
       );
+    });
+  }
+
+  List<MessageModel> messages = [];
+
+  void getMessages({
+    required String receiveId,
+  }) {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userModel!.uId)
+        .collection("chats")
+        .doc(receiveId)
+        .collection("messages")
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messages = [];
+      event.docs.forEach((element) {
+        messages.add(MessageModel.fromJson(element.data()));
+      });
+      emit(GetMessageSuccessState());
     });
   }
 }

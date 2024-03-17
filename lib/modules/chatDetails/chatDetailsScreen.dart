@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/models/messageModel.dart';
 import 'package:social_app/models/userModel.dart';
 import 'package:social_app/shared/cubit/cubitApp/cubit.dart';
 import 'package:social_app/shared/cubit/cubitApp/states.dart';
@@ -14,91 +17,122 @@ class ChatDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            titleSpacing: 0.0,
-            title: Row(
-              children: [
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundImage: NetworkImage(
-                    "${userModel.image}",
-                  ),
-                ),
-                SizedBox(
-                  width: 15.0,
-                ),
-                Text(
-                  "${userModel.name}",
-                ),
-              ],
-            ),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                buildMessage(),
-                buildMyMessage(),
-                const Spacer(),
-                Container(
-                  // clipBehavior: Clip.antiAliasWithSaveLayer,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.amber[500] ?? Colors.black,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: message,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "type your message here ... ",
-                          ),
-                        ),
+    return Builder(
+      builder: (context) {
+        AppCubit.get(context).getMessages(receiveId: "${userModel.uId}");
+        return BlocConsumer<AppCubit, AppStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(
+                titleSpacing: 0.0,
+                title: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 20.0,
+                      backgroundImage: NetworkImage(
+                        "${userModel.image}",
                       ),
-                      Container(
-                        height: 40.0,
-                        // color: Colors.amber[500],
-                        child: MaterialButton(
-                          minWidth: 1.0,
-                          onPressed: () {
-                            AppCubit.get(context).sendMessage(
-                              receiveId: "${userModel.uId}",
-                              dateTime: DateTime.now().toString(),
-                              text: message.text,
-                            );
-                          },
-                          child: Icon(
-                            IconBroken.Send,
-                            size: 22.0,
-                            color: Colors.amber[500],
-                            // color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 15.0,
+                    ),
+                    Text(
+                      "${userModel.name}",
+                    ),
+                  ],
+                ),
+              ),
+              body: ConditionalBuilder(
+                condition: AppCubit.get(context).messages.length > 0,
+                fallback: (context) =>
+                    Center(child: CircularProgressIndicator()),
+                builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (context, Index) {
+                              var message =
+                                  AppCubit.get(context).messages[Index];
+                              if (AppCubit.get(context).userModel!.uId ==
+                                  message.senderId)
+                                return buildMyMessage(message);
+                              return buildMessage(message);
+                            },
+                            separatorBuilder: (context, Index) => SizedBox(
+                              height: 15.0,
+                            ),
+                            itemCount: AppCubit.get(context).messages.length,
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+                        // const Spacer(),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Container(
+                          // clipBehavior: Clip.antiAliasWithSaveLayer,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.amber[500] ?? Colors.black,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: message,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "type your message here ... ",
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 40.0,
+                                // color: Colors.amber[500],
+                                child: MaterialButton(
+                                  minWidth: 1.0,
+                                  onPressed: () {
+                                    AppCubit.get(context).sendMessage(
+                                      receiveId: "${userModel.uId}",
+                                      dateTime: DateTime.now().toString(),
+                                      text: message.text,
+                                    );
+                                    message.text = "";
+                                  },
+                                  child: Icon(
+                                    IconBroken.Send,
+                                    size: 22.0,
+                                    color: Colors.amber[500],
+                                    // color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          },
         );
       },
     );
   }
 
-  Widget buildMessage() => Align(
+  Widget buildMessage(MessageModel model) => Align(
         alignment: AlignmentDirectional.centerStart,
         child: Container(
           padding: EdgeInsets.symmetric(
@@ -119,12 +153,13 @@ class ChatDetailsScreen extends StatelessWidget {
                 ),
               )),
           child: Text(
-            "Hello World !",
+            // "Hello World !",
+            "${model!.text}",
           ),
         ),
       );
 
-  Widget buildMyMessage() => Align(
+  Widget buildMyMessage(MessageModel model) => Align(
         alignment: AlignmentDirectional.centerEnd,
         child: Container(
           padding: EdgeInsets.symmetric(
@@ -145,7 +180,8 @@ class ChatDetailsScreen extends StatelessWidget {
                 ),
               )),
           child: Text(
-            "Hi, How are you ?",
+            // "Hi, How are you ?",
+            "${model!.text}",
           ),
         ),
       );
